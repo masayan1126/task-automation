@@ -7,7 +7,7 @@ steps:
   - my_func
   - --gen2
   - add-invoker-policy-binding RECEIVING_FUNCTION
-  - --member='serviceAccount:CALLING_FUNCTION_IDENTITY'
+  - --member='allUser'
   - --memory=256MiB
   - --max-instances=1
   - --region=asia-northeast1
