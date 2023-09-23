@@ -6,7 +6,7 @@ steps:
   - deploy
   - my_func
   - --gen2
-  - add-invoker-policy-binding RECEIVING_FUNCTION
+  # - add-invoker-policy-binding RECEIVING_FUNCTION
   # - --member='allUser'
   - --memory=256MiB
   - --max-instances=1
