@@ -6,9 +6,11 @@ steps:
   - deploy
   - my_func
   - --gen2
-  - --memory=512Mi
+  # - --memory=512MiB
+  - --max-instances=1
   - --region=asia-northeast1
   - --source=.
   - --trigger-http
   - --allow-unauthenticated
   - --runtime=python311
+  # --set-env-vars FUNCTION_MEMORY_MB=512m
