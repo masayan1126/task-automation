@@ -10,7 +10,7 @@ steps:
   - --max-instances=1
   - --region=asia-northeast1
   - --runtime=python311
-  - --source=.
+  - --source=./content_share
   # - --entry-point=main
   - --trigger-http
   - --allow-unauthenticated
