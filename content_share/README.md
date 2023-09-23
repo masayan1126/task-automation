@@ -1,14 +1,15 @@
 
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv content_share/venv
+source content_share/venv/bin/activate
 
 deactivate
 
-pip install -r requirements.txt
-pip freeze > requirements.txt
+pip install -r content_share/requirements.txt
+pip freeze > content_share/requirements.txt
 
-
-
+python -m pip install functions-framework
+functions-framework --source content_share/main.py --target hello_http --port=8080 --debug
+[localhost:8080](http://localhost:8080)
 
 VSCODE
 
