@@ -6,11 +6,11 @@ steps:
   - deploy
   - my_func
   - --gen2
-  # - --memory=512MiB
+  - --memory=256MiB
   - --max-instances=1
   - --region=asia-northeast1
   - --source=.
   - --trigger-http
   - --allow-unauthenticated
   - --runtime=python311
-  # --set-env-vars FUNCTION_MEMORY_MB=512m
+  - --set-env-vars="CONSUMER_KEY"="StYgY0UzncyoksRwbQhuyAy9R","CONSUMER_SECRET"="ITU9RJHfnAyhRm5CSrkUCDClqA4RpjKo9KLDCOReqZvtozhoGf","ACCESS_TOKEN"="HWc0o3FETg7K462p8Gq3Oj9S7qMX0bV0p8V4yQB","ACCESS_TOKEN_SECRET"="m27m9i5ngYVdzn8tgbqdGK1G8AE5xpK58rcPWdQGuorvG"
