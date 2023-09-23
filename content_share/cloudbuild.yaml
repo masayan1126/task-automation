@@ -5,7 +5,7 @@ steps:
   - functions
   - deploy
   - my_func
-  - --gen2 \
+  - --gen2
   - --region=asia-northeast1
   - --source=.
   - --trigger-http
