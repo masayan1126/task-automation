@@ -5,13 +5,13 @@ steps:
   - functions
   - deploy
   - my_func
-  - --entry-point=hello_http
   - --gen2
   - --memory=256MiB
   - --max-instances=1
   - --region=asia-northeast1
+  - --runtime=python311
+  - --entry-point=hello_http
   - --source=.
   - --trigger-http
   - --allow-unauthenticated
-  - --runtime=python311
   - --set-env-vars="CONSUMER_KEY"="StYgY0UzncyoksRwbQhuyAy9R","CONSUMER_SECRET"="ITU9RJHfnAyhRm5CSrkUCDClqA4RpjKo9KLDCOReqZvtozhoGf","ACCESS_TOKEN"="HWc0o3FETg7K462p8Gq3Oj9S7qMX0bV0p8V4yQB","ACCESS_TOKEN_SECRET"="m27m9i5ngYVdzn8tgbqdGK1G8AE5xpK58rcPWdQGuorvG"
