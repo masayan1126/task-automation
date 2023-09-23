@@ -5,15 +5,15 @@ steps:
   - functions
   - deploy
   - my_func
-  - --gen2
-  - --run-service-account=sssssssssss@sample-project-396701.iam.gserviceaccount.com
-  - --memory=256MiB
-  - --max-instances=1
   - --region=asia-northeast1
   - --runtime=python311
   - --source=./content_share
-  # - --entry-point=main
+  - --entry-point=main
   - --trigger-http
+  # - --gen2
+  # - --run-service-account=sssssssssss@sample-project-396701.iam.gserviceaccount.com
+  # - --memory=256MiB
+  # - --max-instances=1
   # - --allow-unauthenticated
   # - --env GOOGLE_FUNCTION_TARGET=hello_http
   # - --env GOOGLE_FUNCTION_SOURCE=main.py hello_http
