@@ -14,7 +14,15 @@ steps:
   - --max-instances=1
   - --set-env-vars=CONSUMER_KEY=StYgY0UzncyoksRwbQhuyAy9R,CONSUMER_SECRET=ITU9RJHfnAyhRm5CSrkUCDClqA4RpjKo9KLDCOReqZvtozhoGf,ACCESS_TOKEN=1414520142-HWc0o3FETg7K462p8Gq3Oj9S7qMX0bV0p8V4yQB,ACCESS_TOKEN_SECRET=m27m9i5ngYVdzn8tgbqdGK1G8AE5xpK58rcPWdQGuorvG
   # - --gen2
-  # - --run-service-account=sssssssssss@sample-project-396701.iam.gserviceaccount.com
+  - --run-service-account=cloud-function-exec@sample-project-396701.iam.gserviceaccount.com
   # - --allow-unauthenticated
   # - --env GOOGLE_FUNCTION_TARGET=hello_http
   # - --env GOOGLE_FUNCTION_SOURCE=main.py hello_http
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   args:
+#   - gcloud
+#   - functions
+#   - add-iam-policy-binding
+#   - sample-policy
+#   - --member='serviceAccount:functions-2@project_id.iam.gserviceaccount.com' \
+#   - --role='roles/run.invoker'
