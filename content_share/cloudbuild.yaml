@@ -14,7 +14,7 @@ steps:
   - --source=./content_share
   # - --entry-point=main
   - --trigger-http
-  - --allow-unauthenticated
+  # - --allow-unauthenticated
   # - --env GOOGLE_FUNCTION_TARGET=hello_http
   # - --env GOOGLE_FUNCTION_SOURCE=main.py hello_http
   - --set-env-vars="CONSUMER_KEY"="StYgY0UzncyoksRwbQhuyAy9R","CONSUMER_SECRET"="ITU9RJHfnAyhRm5CSrkUCDClqA4RpjKo9KLDCOReqZvtozhoGf","ACCESS_TOKEN"="HWc0o3FETg7K462p8Gq3Oj9S7qMX0bV0p8V4yQB","ACCESS_TOKEN_SECRET"="m27m9i5ngYVdzn8tgbqdGK1G8AE5xpK58rcPWdQGuorvG"
