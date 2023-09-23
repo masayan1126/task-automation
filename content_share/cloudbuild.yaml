@@ -5,6 +5,7 @@ steps:
   - functions
   - deploy
   - my_func
+  - --entry-point=hello_http
   - --gen2
   - --memory=256MiB
   - --max-instances=1
