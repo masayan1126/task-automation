@@ -31,4 +31,6 @@ def __create_client() -> tweepy.Client:
 
 def __do_tweet() -> None:
     client = __create_client()
-    client.create_tweet(text="テストツイート文a")
+    client.create_tweet(
+        text="【Genie AI】VSCodeにインストールすべきChatGPT拡張\n\nhttps://www.youtube.com/watch?v=ngLbfn_3KfQ&feature=youtu.be"
+    )
