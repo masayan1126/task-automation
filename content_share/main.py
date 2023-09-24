@@ -2,10 +2,11 @@ import tweepy
 from dotenv import load_dotenv
 import os
 import functions_framework
+import base64
 
 
 @functions_framework.http
-def main(request):
+def main(event, context):
     load_dotenv()
 
     client = tweepy.Client(
@@ -17,22 +18,12 @@ def main(request):
 
     client.create_tweet(text="テストツイート文a")
 
-    # """HTTP Cloud Function.
-    # Args:
-    #     request (flask.Request): The request object.
-    #     <https://flask.palletsprojects.com/en/1.1.x/api/#incoming-request-data>
-    # Returns:
-    #     The response text, or any set of values that can be turned into a
-    #     Response object using `make_response`
-    #     <https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response>.
-    # """
-    # request_json = request.get_json(silent=True)
-    # request_args = request.args
+    """Triggered from a message on a Cloud Pub/Sub topic.
+    Args:
+         event (dict): Event payload.
+         context (google.cloud.functions.Context): Metadata for the event.
+    """
 
-    # if request_json and "name" in request_json:
-    #     name = request_json["name"]
-    # elif request_args and "name" in request_args:
-    #     name = request_args["name"]
-    # else:
-    #     name = "World"
+    pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
+    print(pubsub_message)
     return "Hello {}!!Q".format("name")
