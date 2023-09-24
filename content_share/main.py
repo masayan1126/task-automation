@@ -1,11 +1,12 @@
 import tweepy
 from dotenv import load_dotenv
 import os
-import functions_framework
+
+# import functions_framework
 import base64
 
 
-@functions_framework.http
+# @functions_framework.http
 def main(event, context):
     load_dotenv()
 

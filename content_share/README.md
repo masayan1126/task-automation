@@ -8,6 +8,7 @@ pip install -r content_share/requirements.txt
 pip freeze > content_share/requirements.txt
 
 python -m pip install functions-framework
+python -m pip install -r content_share/requirements.txt
 functions-framework --source content_share/main.py --target hello_http --port=8080 --debug
 [localhost:8080](http://localhost:8080)
 
