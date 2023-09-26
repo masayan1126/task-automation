@@ -4,6 +4,7 @@ import os
 import base64
 from apiclient.discovery import build
 import slackweb
+import ssl
 
 """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
@@ -13,6 +14,7 @@ import slackweb
 
 
 # TODO: GCP Pub / Sub エミュレータ
+# def main():
 def main(event, context):
     try:
         load_dotenv()
@@ -24,8 +26,11 @@ def main(event, context):
         pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
         print(pubsub_message)
 
+        # SSLの証明書確認をOFFにして接続
+        ssl._create_default_https_context = ssl._create_unverified_context
+
         slack = slackweb.Slack(
-            url="https://hooks.slack.com/services/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"
+            url="https://hooks.slack.com/services/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"
         )
         slack.notify(text="デプロイが完了しました")
         # print(f"context is {context}")
@@ -61,3 +66,7 @@ def __my_movies():
     )
     item = channel["items"]
     print(f"My channel is ={item}")
+
+
+# if __name__ == "__main__":
+#     main()
