@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 import base64
 from apiclient.discovery import build
+import slackweb
 
 """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
@@ -22,6 +23,11 @@ def main(event, context):
 
         pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
         print(pubsub_message)
+
+        slack = slackweb.Slack(
+            url="https://hooks.slack.com/services/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"
+        )
+        slack.notify(text=f"{context}。デプロイが完了しました")
         return "Hello {}!!Q".format("name")
     except Exception as e:
         print(e)
