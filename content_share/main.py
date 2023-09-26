@@ -2,6 +2,7 @@ import tweepy
 from dotenv import load_dotenv
 import os
 import base64
+from apiclient.discovery import build
 
 """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
@@ -15,6 +16,8 @@ def main(event, context):
     load_dotenv()
     # TODO: cloud schedulerからシェアするコンテンツの情報をjsonなどで受け取る
     __do_tweet()
+
+    __my_movies()
 
     pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
     print(pubsub_message)
@@ -33,5 +36,18 @@ def __create_client() -> tweepy.Client:
 def __do_tweet() -> None:
     client = __create_client()
     client.create_tweet(
-        text="【Genie AI】VSCodeにインストールすべきChatGPT拡張\n\nhttps://www.youtube.com/watch?v=ngLbfn_3KfQ&feature=youtu.be"
+        text="【Genie AI】VSCodeにインストールすべきChatGPT拡張\n\nhttps://www.youtube.com/watch?v=ngLbfn_3KfQ&feature=youtu.be\n\n#ChatGPt"
     )
+
+
+def __my_movies():
+    API_KEY = os.getenv("API_KEY")
+    API_VER = "v3"
+    youtube = build("youtube", API_VER, developerKey=API_KEY)
+    channel_id = "UC5AcEeC1LjJ7f5-o5jxfzqQ"
+
+    channel = (
+        youtube.channels().list(part="snippet,contentDetails", id=channel_id).execute()
+    )
+    item = channel["items"]
+    print(channel)

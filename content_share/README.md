@@ -17,6 +17,7 @@ VSCODE
 python.autoComplete.extraPaths
 
 
+gcloud pubsub topics publish sample-topic --message "Good Morning"
 
 
 ```
