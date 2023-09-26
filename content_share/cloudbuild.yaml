@@ -22,11 +22,11 @@ steps:
   # - --gen2
   # - --run-service-account=cloud-function-exec@sample-project-396701.iam.gserviceaccount.com
 
-# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-#   args:
-#   - gcloud
-#   - functions
-#   - add-iam-policy-binding
-#   - sample-policy
-#   - --member='serviceAccount:functions-2@project_id.iam.gserviceaccount.com' \
-#   - --role='roles/run.invoker'
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args:
+  - gcloud
+  - pubsub
+  - sample-function-deploy-topic
+  - publish
+  - --message
+  - "Good Morning"

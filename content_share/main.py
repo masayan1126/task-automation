@@ -3,8 +3,6 @@ from dotenv import load_dotenv
 import os
 import base64
 from apiclient.discovery import build
-import slackweb
-import ssl
 
 """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
@@ -19,20 +17,13 @@ def main(event, context):
     try:
         load_dotenv()
         # TODO: cloud schedulerからシェアするコンテンツの情報をjsonなどで受け取る
-        __do_tweet()
+        # __do_tweet()
 
         __my_movies()
 
         pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
         print(pubsub_message)
 
-        # SSLの証明書確認をOFFにして接続
-        ssl._create_default_https_context = ssl._create_unverified_context
-
-        slack = slackweb.Slack(
-            url="https://hooks.slack.com/services/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"
-        )
-        slack.notify(text="デプロイが完了しました")
         # print(f"context is {context}")
         return "Hello {}!!Q".format("name")
     except Exception as e:
