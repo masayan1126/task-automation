@@ -10,6 +10,7 @@ import base64
     """
 
 
+# TODO: GCP Pub / Sub エミュレータ
 def main(event, context):
     load_dotenv()
     # TODO: cloud schedulerからシェアするコンテンツの情報をjsonなどで受け取る

@@ -1,5 +1,5 @@
 
-python3 -m venv content_share/venv
+python3 -m venv content_share/.venv
 source content_share/venv/bin/activate
 
 deactivate
