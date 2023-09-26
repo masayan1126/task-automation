@@ -1,5 +1,5 @@
-steps:
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+steps:
   args:
   - gcloud
   - functions
@@ -26,7 +26,8 @@ steps:
   args:
   - gcloud
   - pubsub
-  - sample-function-deploy-topic
+  - topics
   - publish
+  - sample-function-deploy-topic
   - --message
   - "Good Morning"
