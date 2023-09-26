@@ -27,7 +27,8 @@ def main(event, context):
         slack = slackweb.Slack(
             url="https://hooks.slack.com/services/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"
         )
-        slack.notify(text=f"{context}。デプロイが完了しました")
+        slack.notify(text="デプロイが完了しました")
+        print(f"context is {context}")
         return "Hello {}!!Q".format("name")
     except Exception as e:
         print(e)
