@@ -52,5 +52,5 @@ def __my_movies():
     channel = (
         youtube.channels().list(part="snippet,contentDetails", id=channel_id).execute()
     )
-    item = channel["items"]
-    print(f"My channel is ={channel}")
+    item = channel["items"]["contentDetails"]
+    print(f"My channel is ={item}")
