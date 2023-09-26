@@ -13,15 +13,18 @@ from apiclient.discovery import build
 
 # TODO: GCP Pub / Sub エミュレータ
 def main(event, context):
-    load_dotenv()
-    # TODO: cloud schedulerからシェアするコンテンツの情報をjsonなどで受け取る
-    __do_tweet()
+    try:
+        load_dotenv()
+        # TODO: cloud schedulerからシェアするコンテンツの情報をjsonなどで受け取る
+        __do_tweet()
 
-    __my_movies()
+        __my_movies()
 
-    pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
-    print(pubsub_message)
-    return "Hello {}!!Q".format("name")
+        pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
+        print(pubsub_message)
+        return "Hello {}!!Q".format("name")
+    except Exception as e:
+        print(e)
 
 
 def __create_client() -> tweepy.Client:
@@ -50,4 +53,4 @@ def __my_movies():
         youtube.channels().list(part="snippet,contentDetails", id=channel_id).execute()
     )
     item = channel["items"]
-    print(channel)
+    print(f"My channel is ={channel}")
