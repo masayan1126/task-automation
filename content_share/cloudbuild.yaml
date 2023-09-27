@@ -12,15 +12,6 @@ steps:
   - --source=./content_share
   # ソースコード内に存在する関数名または完全修飾クラス名
   - --entry-point=main
-  # - --target
-  # - --runtime=python311
-  # - --trigger-http
-  # - --trigger-topic=YOUR_PUBSUB_TOPIC
-  # - --memory=256MiB
-  # - --max-instances=1
-  # - --set-env-vars=CONSUMER_KEY=StYgY0UzncyoksRwbQhuyAy9R,CONSUMER_SECRET=ITU9RJHfnAyhRm5CSrkUCDClqA4RpjKo9KLDCOReqZvtozhoGf,ACCESS_TOKEN=1414520142-HWc0o3FETg7K462p8Gq3Oj9S7qMX0bV0p8V4yQB,ACCESS_TOKEN_SECRET=m27m9i5ngYVdzn8tgbqdGK1G8AE5xpK58rcPWdQGuorvG
-  # - --gen2
-  # - --run-service-account=cloud-function-exec@sample-project-396701.iam.gserviceaccount.com
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   args:
@@ -30,4 +21,4 @@ steps:
   - publish
   - sample-function-deploy-topic
   - --message
-  - "Good Morning"
+  - "Finish deploying function !!"

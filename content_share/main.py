@@ -2,12 +2,14 @@ import tweepy
 from dotenv import load_dotenv
 import os
 import base64
-from apiclient import discovery
+
 import logging
 
-import requests
-import json
+
 import sys
+
+from notification import notify_to_slack
+from youtube import my_videos
 
 """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
@@ -22,11 +24,20 @@ def main(event, context):
     try:
         load_dotenv()
         # TODO: cloud schedulerからシェアするコンテンツの情報をjsonなどで受け取る
-        # __do_tweet()
 
-        __my_videos()
-        __notify_to_slack()
-        return "Hello {}!!Q".format("name")
+        videos = my_videos()
+
+        print("チャンネルの動画一覧:")
+        for video_info in videos:
+            print(f"url: {video_info['url']}, title: {video_info['title']}")
+
+        res = notify_to_slack()
+        print(f"Notification response={res}")
+
+        # TODO: 動画リストからランダムに2つシェア
+        # TODO: プログ記事も追加する
+
+        # __do_tweet()
 
         # pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
         # print(pubsub_message)
@@ -41,23 +52,6 @@ def main(event, context):
         raise e
 
 
-def __notify_to_slack():
-    payload = {
-        "icon_emoji": ":ghost:",
-        "username": "new-bot-name",
-        "text": "定期実行処理が完了しました",
-    }
-
-    headers = {"Content-Type": "application/json; charset=UTF-8"}
-    res = requests.post(
-        url=os.getenv("SLACK_WEBHOOK_URL"),
-        headers=headers,
-        data=json.dumps(payload),
-        proxies=None,
-    )
-    print(res)
-
-
 def __do_tweet() -> None:
     client = tweepy.Client(
         consumer_key=os.getenv("CONSUMER_KEY"),
@@ -67,82 +61,6 @@ def __do_tweet() -> None:
     )
     client.create_tweet(
         text="【Genie AI】VSCodeにインストールすべきChatGPT拡張\n\nhttps://www.youtube.com/watch?v=ngLbfn_3KfQ&feature=youtu.be\n\n#ChatGPt"
-    )
-
-
-def __my_videos():
-    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-    API_VER = "v3"
-    youtube_service = discovery.build("youtube", API_VER, developerKey=GOOGLE_API_KEY)
-
-    videos = []
-    next_page_token = None
-
-    while True:
-        request = youtube_service.search().list(
-            part="id",
-            channelId="UC5AcEeC1LjJ7f5-o5jxfzqQ",
-            maxResults=50,  # 1回のリクエストで取得する最大動画数
-            pageToken=next_page_token,
-        )
-
-        # チャンネル内の全てのビデオ
-        response = request.execute()
-
-        for item in response["items"]:
-            if is_want_share_video(item):
-                video_id = item["id"]["videoId"]
-                title = get_video_title_by_id(youtube_service, video_id)
-                videos.append({"id": video_id, "title": title})
-
-        next_page_token = response.get("nextPageToken")
-
-        if not next_page_token:
-            break
-
-    print("チャンネルの動画一覧:")
-    for video_info in videos:
-        print(
-            f"Url: https://www.youtube.com/watch?v={video_info['id']}, title: {video_info['title']}"
-        )
-
-
-def get_video_title_by_id(youtube_service, video_id: str) -> str:
-    # ビデオIDに一致するビデオ
-    res = (
-        youtube_service.videos()
-        .list(part="snippet,statistics", id="{},".format(video_id))
-        .execute()
-    )
-
-    snippetInfo = res["items"][0]["snippet"]
-    title = snippetInfo["title"]
-    return title
-
-
-def is_want_share_video(item) -> bool:
-    exclude_video_ids = [
-        # エンジニアリング以外
-        "a9UJ99caBTQ",
-        "Z2Dn6Xtqb6I",
-        "7FTjlE7FYZ8",
-        "9xo4ChsAGes",
-        "c9hQhKth8iU",
-        "40GWEutdMpg",
-        "JhGZdJDKBgk",
-        "q-LdsnYdYmc",
-        "7jYfbwp5-RE",
-        # 【プログラミング】Reactにtailwindcssを導入する
-        "mvu1G2I32nzfLlAV",
-        # webpack関連3つ
-        "wV-R1DM59kkJqGsB",
-        "z3cm601dfTUF4VW_",
-        "QJIbIpY5ZD7zGoKA",
-    ]
-
-    return (
-        item["id"]["kind"] == "youtube#video"
-        and item["id"]["videoId"] not in exclude_video_ids
     )
 
 
