@@ -22,10 +22,10 @@ def main(event, context):
         # TODO: cloud schedulerからシェアするコンテンツの情報をjsonなどで受け取る
         # __do_tweet()
 
-        __my_movies()
+        # __my_movies()
 
-        pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
-        print(pubsub_message)
+        # pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
+        # print(pubsub_message)
 
         __notify_to_slack()
 
@@ -43,13 +43,13 @@ def __notify_to_slack():
     }
 
     headers = {"Content-Type": "application/json; charset=UTF-8"}
-    requests.post(
-        "https://hooks.slack.com/services/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",
+    res = requests.post(
+        "https://hooks.slack.com/services/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",
         headers=headers,
         data=json.dumps(payload),
         proxies=None,
     )
-    # raise e
+    raise print(res)
 
 
 def __create_client() -> tweepy.Client:
