@@ -69,11 +69,31 @@ def __my_movies():
     youtube = build("youtube", API_VER, developerKey=GOOGLE_API_KEY)
     channel_id = "UC5AcEeC1LjJ7f5-o5jxfzqQ"
 
-    channel = (
-        youtube.channels().list(part="snippet,contentDetails", id=channel_id).execute()
-    )
-    item = channel["items"]
-    print(f"My channel is ={item}")
+    videos = []
+    next_page_token = None
+
+    while True:
+        request = youtube.search().list(
+            part="id",
+            channelId=channel_id,
+            maxResults=50,  # 1回のリクエストで取得する最大動画数
+            pageToken=next_page_token,
+        )
+
+        response = request.execute()
+
+        for item in response["items"]:
+            video_id = item["id"]["videoId"]
+            videos.append(video_id)
+
+        next_page_token = response.get("nextPageToken")
+
+        if not next_page_token:
+            break
+
+    print("チャンネルの動画一覧:")
+    for video_id in videos:
+        print(f"https://www.youtube.com/watch?v={video_id}")
 
 
 # if __name__ == "__main__":
