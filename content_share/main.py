@@ -3,9 +3,11 @@ from dotenv import load_dotenv
 import os
 import base64
 from apiclient.discovery import build
+import logging
 
 import requests
 import json
+import sys
 
 """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
@@ -31,7 +33,11 @@ def main(event, context):
         # print(f"context is {context}")
 
     except Exception as e:
-        print(f"Exception is {e}")
+        e_type, e_value, e_traceback = sys.exc_info()
+        logging.error("Exception type : %s " % e_type.__name__)
+        logging.error("Exception message : %s " % e_value.__name__)
+        logging.error("Stack trace : %s " % e_traceback.__name__)
+
         raise e
 
 
@@ -82,10 +88,9 @@ def __my_movies():
         )
 
         response = request.execute()
-        print(response["items"])
 
         for item in response["items"]:
-            if item["id"]["kind"] is "youtube#video":
+            if item["id"]["kind"] == "youtube#video":
                 video_id = item["id"]["videoId"]
                 videos.append(video_id)
 
