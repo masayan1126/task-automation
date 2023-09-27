@@ -2,7 +2,7 @@ import tweepy
 from dotenv import load_dotenv
 import os
 import base64
-from apiclient.discovery import build
+from apiclient import discovery
 import logging
 
 import requests
@@ -24,7 +24,7 @@ def main(event, context):
         # TODO: cloud schedulerからシェアするコンテンツの情報をjsonなどで受け取る
         # __do_tweet()
 
-        __my_movies()
+        __my_videos()
         __notify_to_slack()
         return "Hello {}!!Q".format("name")
 
@@ -70,16 +70,16 @@ def __do_tweet() -> None:
     )
 
 
-def __my_movies():
+def __my_videos():
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
     API_VER = "v3"
-    youtube = build("youtube", API_VER, developerKey=GOOGLE_API_KEY)
+    youtube_service = discovery.build("youtube", API_VER, developerKey=GOOGLE_API_KEY)
 
     videos = []
     next_page_token = None
 
     while True:
-        request = youtube.search().list(
+        request = youtube_service.search().list(
             part="id",
             channelId="UC5AcEeC1LjJ7f5-o5jxfzqQ",
             maxResults=50,  # 1回のリクエストで取得する最大動画数
@@ -92,16 +92,7 @@ def __my_movies():
         for item in response["items"]:
             if is_want_share_video(item):
                 video_id = item["id"]["videoId"]
-
-                # ビデオIDに一致するビデオ
-                res = (
-                    youtube.videos()
-                    .list(part="snippet,statistics", id="{},".format(video_id))
-                    .execute()
-                )
-
-                snippetInfo = res["items"][0]["snippet"]
-                title = snippetInfo["title"]
+                title = get_video_title_by_id(youtube_service, video_id)
                 videos.append({"id": video_id, "title": title})
 
         next_page_token = response.get("nextPageToken")
@@ -114,6 +105,19 @@ def __my_movies():
         print(
             f"Url: https://www.youtube.com/watch?v={video_info['id']}, title: {video_info['title']}"
         )
+
+
+def get_video_title_by_id(youtube_service, video_id: str) -> str:
+    # ビデオIDに一致するビデオ
+    res = (
+        youtube_service.videos()
+        .list(part="snippet,statistics", id="{},".format(video_id))
+        .execute()
+    )
+
+    snippetInfo = res["items"][0]["snippet"]
+    title = snippetInfo["title"]
+    return title
 
 
 def is_want_share_video(item) -> bool:
