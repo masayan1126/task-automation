@@ -64,9 +64,9 @@ def __do_tweet() -> None:
 
 
 def __my_movies():
-    API_KEY = os.getenv("API_KEY")
+    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
     API_VER = "v3"
-    youtube = build("youtube", API_VER, developerKey=API_KEY)
+    youtube = build("youtube", API_VER, developerKey=GOOGLE_API_KEY)
     channel_id = "UC5AcEeC1LjJ7f5-o5jxfzqQ"
 
     channel = (
