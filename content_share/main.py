@@ -32,6 +32,7 @@ def main(event, context):
 
     except Exception as e:
         print(f"Exception is {e}")
+        raise e
 
 
 def __notify_to_slack():
@@ -81,6 +82,7 @@ def __my_movies():
         )
 
         response = request.execute()
+        print(response["items"])
 
         for item in response["items"]:
             video_id = item["id"]["videoId"]
