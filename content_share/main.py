@@ -4,6 +4,9 @@ import os
 import base64
 from apiclient.discovery import build
 
+import requests
+import json
+
 """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
          event (dict): Event payload.
@@ -24,10 +27,29 @@ def main(event, context):
         pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
         print(pubsub_message)
 
+        __notify_to_slack()
+
         # print(f"context is {context}")
         return "Hello {}!!Q".format("name")
     except Exception as e:
-        print(e)
+        print(f"Exception is {e}")
+
+
+def __notify_to_slack():
+    payload = {
+        "icon_emoji": ":ghost:",
+        "username": "new-bot-name",
+        "text": "定期実行処理が完了しました",
+    }
+
+    headers = {"Content-Type": "application/json; charset=UTF-8"}
+    requests.post(
+        "https://hooks.slack.com/services/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",
+        headers=headers,
+        data=json.dumps(payload),
+        proxies=None,
+    )
+    # raise e
 
 
 def __create_client() -> tweepy.Client:
