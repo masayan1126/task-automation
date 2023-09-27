@@ -22,15 +22,14 @@ def main(event, context):
         # TODO: cloud schedulerからシェアするコンテンツの情報をjsonなどで受け取る
         # __do_tweet()
 
-        # __my_movies()
+        __my_movies()
+        __notify_to_slack()
+        return "Hello {}!!Q".format("name")
 
         # pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
         # print(pubsub_message)
-
-        __notify_to_slack()
-
         # print(f"context is {context}")
-        return "Hello {}!!Q".format("name")
+
     except Exception as e:
         print(f"Exception is {e}")
 
@@ -44,25 +43,21 @@ def __notify_to_slack():
 
     headers = {"Content-Type": "application/json; charset=UTF-8"}
     res = requests.post(
-        "https://hooks.slack.com/services/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",
+        consumer_key=os.getenv("SLACK_WEBHOOK_URL"),
         headers=headers,
         data=json.dumps(payload),
         proxies=None,
     )
-    raise print(res)
+    print(res)
 
 
-def __create_client() -> tweepy.Client:
-    return tweepy.Client(
+def __do_tweet() -> None:
+    client = tweepy.Client(
         consumer_key=os.getenv("CONSUMER_KEY"),
         consumer_secret=os.getenv("CONSUMER_SECRET"),
         access_token=os.getenv("ACCESS_TOKEN"),
         access_token_secret=os.getenv("ACCESS_TOKEN_SECRET"),
     )
-
-
-def __do_tweet() -> None:
-    client = __create_client()
     client.create_tweet(
         text="【Genie AI】VSCodeにインストールすべきChatGPT拡張\n\nhttps://www.youtube.com/watch?v=ngLbfn_3KfQ&feature=youtu.be\n\n#ChatGPt"
     )
