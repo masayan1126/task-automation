@@ -92,7 +92,18 @@ def __my_movies():
         for item in response["items"]:
             if item["id"]["kind"] == "youtube#video":
                 video_id = item["id"]["videoId"]
-                videos.append(video_id)
+
+                res = (
+                    youtube.videos()
+                    .list(part="snippet,statistics", id="{},".format(video_id))
+                    .execute()
+                )
+                # snippet
+                snippetInfo = res["items"][0]["snippet"]
+                # 動画タイトル
+                title = snippetInfo["title"]
+
+                videos.append({"id": video_id, "title": title})
 
         next_page_token = response.get("nextPageToken")
 
@@ -100,8 +111,10 @@ def __my_movies():
             break
 
     print("チャンネルの動画一覧:")
-    for video_id in videos:
-        print(f"https://www.youtube.com/watch?v={video_id}")
+    for video_info in videos:
+        print(
+            f"Url: https://www.youtube.com/watch?v={video_info['id']}, title: {video_info['title']}"
+        )
 
 
 # if __name__ == "__main__":
