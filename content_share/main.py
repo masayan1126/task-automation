@@ -43,7 +43,7 @@ def __notify_to_slack():
 
     headers = {"Content-Type": "application/json; charset=UTF-8"}
     res = requests.post(
-        consumer_key=os.getenv("SLACK_WEBHOOK_URL"),
+        url=os.getenv("SLACK_WEBHOOK_URL"),
         headers=headers,
         data=json.dumps(payload),
         proxies=None,
