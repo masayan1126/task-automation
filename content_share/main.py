@@ -1,5 +1,5 @@
-from content_share.utils import get_random_element_from_list
-from content_share.x import do_tweet
+from utils import get_random_element_from_list
+from x import do_tweet
 from dotenv import load_dotenv
 
 import base64
