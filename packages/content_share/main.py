@@ -16,8 +16,6 @@ from youtube import my_videos
     """
 
 
-# TODO: GCP Pub / Sub エミュレータ
-# def main():
 def main(event, context):
     try:
         load_dotenv()
@@ -55,7 +53,3 @@ def main(event, context):
         logging.error("Stack trace : %s " % e_traceback.__name__)
 
         raise e
-
-
-# if __name__ == "__main__":
-#     main()

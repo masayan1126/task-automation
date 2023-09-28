@@ -1,0 +1,37 @@
+steps:
+  - name: 'gcr.io/cloud-builders/git'
+    entrypoint: /bin/bash
+    args: 
+    # Gitリポジトリからリモートのmainブランチを取得。最新のコミットから2つのコミットの履歴のみを取得しローカルリポジトリに反映
+    # ローカルのGitリポジトリのコミットログを表示(すべてのコミットメッセージとコミット情報が表示)
+    # 最新のコミット (HEAD) とその前のコミット (HEAD^) の間の差分情報を取得。--name-only オプションを使用して、差分されたファイルの名前のみを表示
+    # `grep "/"` を使用して、ディレクトリ階層があるファイルのみをフィルタリング
+    # `cut -d/ -f1` を使用して、ファイルパスの最初のセグメント (ディレクトリ名) を抽出
+    # `sort` を使用して、ディレクトリ名をアルファベット順にソート
+    # `uniq` を使用して、重複したディレクトリ名を削除
+    - -c
+    - |
+      git fetch --depth=2 origin main
+      git  log
+      git --no-pager diff --name-only HEAD^ HEAD | grep "/" | cut -d/ -f1 | sort | uniq > /workspace/diff.txt
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: /bin/bash
+    args: 
+    - -c
+    - |
+       while read line
+       do 
+       config="${line}/cloudbuild.yaml"
+       echo $config
+       if [[ ! -f "${config}" ]]; then
+        echo "no such file"
+        continue
+       fi
+       gcloud builds submit $line --config=${config}
+       done < /workspace/diff.txt
+options:
+ logging: CLOUD_LOGGING_ONLY
+
+
+# モノレポ構成でインフラアーキテクチャのリポジトリを管理する
+# 同一リポジトリでGoogle Cloud上の異なるアプリケーションのインフラを管理する
