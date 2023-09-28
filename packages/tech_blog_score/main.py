@@ -34,7 +34,7 @@ def main(event, context):
 
         for i in range(measurement_count):
             res = requests.get(urlName, params=payload)
-            res = res.json()  # jsonに変換
+            res = res.json()
 
             row_score = res["lighthouseResult"]["categories"]["performance"]["score"]
             score = math.floor(row_score * 100)
