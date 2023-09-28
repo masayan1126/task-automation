@@ -1,11 +1,9 @@
-import tweepy
+from content_share.utils import get_random_element_from_list
+from content_share.x import do_tweet
 from dotenv import load_dotenv
-import os
+
 import base64
-
 import logging
-
-
 import sys
 
 from notification import notify_to_slack
@@ -31,13 +29,20 @@ def main(event, context):
         for video_info in videos:
             print(f"url: {video_info['url']}, title: {video_info['title']}")
 
-        res = notify_to_slack()
-        print(f"Notification response={res}")
-
-        # TODO: 動画リストからランダムに2つシェア
+        share_content_list = get_random_element_from_list(videos, 2)
         # TODO: プログ記事も追加する
+        # TODO: logをutil化する
 
-        # __do_tweet()
+        do_tweet(share_content_list)
+
+        res = notify_to_slack(
+            payload={
+                "icon_emoji": ":ghost:",
+                "username": "new-bot-name",
+                "text": f"定期シェア処理が完了しました\n\n{share_content_list}",
+            }
+        )
+        print(f"Notification response={res}")
 
         # pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
         # print(pubsub_message)
@@ -50,18 +55,6 @@ def main(event, context):
         logging.error("Stack trace : %s " % e_traceback.__name__)
 
         raise e
-
-
-def __do_tweet() -> None:
-    client = tweepy.Client(
-        consumer_key=os.getenv("CONSUMER_KEY"),
-        consumer_secret=os.getenv("CONSUMER_SECRET"),
-        access_token=os.getenv("ACCESS_TOKEN"),
-        access_token_secret=os.getenv("ACCESS_TOKEN_SECRET"),
-    )
-    client.create_tweet(
-        text="【Genie AI】VSCodeにインストールすべきChatGPT拡張\n\nhttps://www.youtube.com/watch?v=ngLbfn_3KfQ&feature=youtu.be\n\n#ChatGPt"
-    )
 
 
 # if __name__ == "__main__":
