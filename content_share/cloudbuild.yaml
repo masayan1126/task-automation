@@ -9,7 +9,7 @@ steps:
   # - share_content_automatically
   - --region=asia-northeast1
   # 関数のソースコードの場所
-  - --source=../
+  - --source=./
   # ソースコード内に存在する関数名または完全修飾クラス名
   - --entry-point=main
 
