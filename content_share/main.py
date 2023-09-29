@@ -6,7 +6,7 @@ import base64
 import logging
 import sys
 
-from notification import notify_to_slack
+from utils.notification import notify_to_slack
 from youtube import my_videos
 
 """Triggered from a message on a Cloud Pub/Sub topic.
