@@ -24,7 +24,7 @@ def main(event, context):
         site_url = "https://maasaablog.com/page/1"
         endpoint = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
 
-        strategy_param = "mobile"  # モバイルサイト か #PC を指定(mobile or desktop)
+        strategy_param = "mobile"  # (mobile or desktop)
         payload = {"strategy": strategy_param, "api_key": os.getenv("GOOGLE_API_KEY")}
 
         urlName = endpoint + "?url=" + site_url
