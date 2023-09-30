@@ -5,7 +5,7 @@ steps:
   - functions
   - deploy
   # デプロイするfunction名
-  - my_func
+  - content_share
   # - share_content_automatically
   - --region=asia-northeast1
   # 関数のソースコードの場所
