@@ -41,7 +41,7 @@ def main(event, context):
         #     },
         #     to=os.getenv("SLACK_WEBHOOK_URL"),
         # )
-        print(f"Notification response={res}")
+        # print(f"Notification response={res}")
 
         # pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
         # print(pubsub_message)
