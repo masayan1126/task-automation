@@ -6,7 +6,8 @@ import logging
 import sys
 from youtube import my_videos
 from x import do_tweet
-from taopypy.notification import notify_to_slack
+
+# from taopypy.notification import notify_to_slack
 
 """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
@@ -32,14 +33,14 @@ def main(event, context):
 
         do_tweet(share_content_list)
 
-        res = notify_to_slack(
-            payload={
-                "icon_emoji": ":ghost:",
-                "username": "new-bot-name",
-                "text": f"定期シェア処理が完了しました\n\n{share_content_list}",
-            },
-            to=os.getenv("SLACK_WEBHOOK_URL"),
-        )
+        # res = notify_to_slack(
+        #     payload={
+        #         "icon_emoji": ":ghost:",
+        #         "username": "new-bot-name",
+        #         "text": f"定期シェア処理が完了しました\n\n{share_content_list}",
+        #     },
+        #     to=os.getenv("SLACK_WEBHOOK_URL"),
+        # )
         print(f"Notification response={res}")
 
         # pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
