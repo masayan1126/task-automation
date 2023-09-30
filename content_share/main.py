@@ -2,12 +2,8 @@ import os
 from utils import get_random_element_from_list
 from x import do_tweet
 from dotenv import load_dotenv
-
-import base64
 import logging
 import sys
-
-
 from youtube import my_videos
 from x import do_tweet
 from taopypy.notification import notify_to_slack
