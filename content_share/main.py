@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from youtube import my_videos
 from x import do_tweet
 
-# from taopypy.notification import notify_to_slack
+from taopypy.notification import notify_to_slack
 
 """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
@@ -31,15 +31,15 @@ def main(event, context):
 
         do_tweet(share_content_list)
 
-        # res = notify_to_slack(
-        #     payload={
-        #         "icon_emoji": ":ghost:",
-        #         "username": "new-bot-name",
-        #         "text": f"定期シェア処理が完了しました\n\n{share_content_list}",
-        #     },
-        #     to=os.getenv("SLACK_WEBHOOK_URL"),
-        # )
-        # print(f"Notification response={res}")
+        res = notify_to_slack(
+            payload={
+                "icon_emoji": ":ghost:",
+                "username": "new-bot-name",
+                "text": f"定期シェア処理が完了しました\n\n{share_content_list}",
+            },
+            to=os.getenv("SLACK_WEBHOOK_URL"),
+        )
+        print(f"Notification response={res}")
 
         # pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
         # print(pubsub_message)
@@ -52,4 +52,4 @@ def main(event, context):
         # logging.error("Exception message : %s " % e_value.__name__)
         # logging.error("Stack trace : %s " % e_traceback.__name__)
 
-        # raise e
+        raise e

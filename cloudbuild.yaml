@@ -27,7 +27,7 @@ steps:
         echo "no such file"
         continue
        fi
-       gcloud builds submit . --config=${config}
+       gcloud builds submit $line --config=${config}
        done < /workspace/diff.txt
 options:
  logging: CLOUD_LOGGING_ONLY
