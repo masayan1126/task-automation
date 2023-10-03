@@ -1,12 +1,11 @@
-from decimal import ROUND_HALF_UP, Decimal
-import math
 import os
-import requests
+
 from dotenv import load_dotenv
 import logging
 import sys
 
-import numpy
+from features.score import calc_tech_blog_score
+
 
 # from notification import notify_to_slack
 
@@ -30,22 +29,10 @@ def main(event, context):
         urlName = endpoint + "?url=" + site_url
         # 測定回数
         measurement_count = 3
-        scores = []
 
-        for i in range(measurement_count):
-            res = requests.get(urlName, params=payload)
-            res = res.json()
-
-            row_score = res["lighthouseResult"]["categories"]["performance"]["score"]
-            score = math.floor(row_score * 100)
-            scores.append(score)
-
-        score_average_raw = numpy.average(scores)
-        score_average = Decimal(str(score_average_raw)).quantize(
-            Decimal("0.1"), rounding=ROUND_HALF_UP
+        score_average, score_max, score_min = calc_tech_blog_score.calc(
+            payload, urlName, measurement_count
         )
-        score_max = numpy.amax(scores)
-        score_min = numpy.amin(scores)
         print(f"\n平均 {score_average} 点（最低 {score_min} 点、最高 {score_max} 点）")
 
     except Exception as e:
