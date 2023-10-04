@@ -36,9 +36,4 @@ def main(event, context):
         print(f"\n平均 {score_average} 点（最低 {score_min} 点、最高 {score_max} 点）")
 
     except Exception as e:
-        e_type, e_value, e_traceback = sys.exc_info()
-        logging.error("Exception type : %s " % e_type.__name__)
-        logging.error("Exception message : %s " % e_value.__name__)
-        logging.error("Stack trace : %s " % e_traceback.__name__)
-
         raise e
