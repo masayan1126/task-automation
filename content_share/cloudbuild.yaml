@@ -19,6 +19,6 @@ steps:
   - pubsub
   - topics
   - publish
-  - content-share-deploy-topic
+  - function-deploy-topic
   - --message
-  - "Finish deploying function !!"
+  - "Finish deploying content share function !!"

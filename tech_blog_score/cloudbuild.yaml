@@ -18,6 +18,6 @@ steps:
   - pubsub
   - topics
   - publish
-  - sample-function-deploy-topic
+  - function-deploy-topic
   - --message
-  - "Finish deploying function !!"
+  - "Finish deploying tech blog score function !!"
