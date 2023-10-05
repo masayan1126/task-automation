@@ -1,5 +1,6 @@
 from decimal import ROUND_HALF_UP, Decimal
 import math
+import time
 import requests
 import numpy
 
@@ -9,6 +10,7 @@ def calc(payload, urlName, measurement_count):
 
     for _ in range(measurement_count):
         res = requests.get(urlName, params=payload)
+        time.sleep(5)
         print(f"res={res}")
     #     res = res.json()
 
