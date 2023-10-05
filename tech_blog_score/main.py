@@ -28,7 +28,7 @@ def main(event, context):
 
         urlName = endpoint + "?url=" + site_url
         # 測定回数
-        measurement_count = 3
+        measurement_count = 1
 
         score_average, score_max, score_min = calc_tech_blog_score.calc(
             payload, urlName, measurement_count
