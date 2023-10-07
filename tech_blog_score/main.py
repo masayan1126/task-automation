@@ -5,7 +5,7 @@ import logging
 import sys
 
 from features.score import calc_tech_blog_score
-
+from taopypy.modules.formatter.error_formatter import ErrorFormatter
 
 # from notification import notify_to_slack
 
@@ -36,4 +36,6 @@ def main(event, context):
         print(f"\n平均 {score_average} 点（最低 {score_min} 点、最高 {score_max} 点）")
 
     except Exception as e:
-        raise e
+        formatted = ErrorFormatter().format(e)
+        print(formatted["message"])
+        print(formatted["stack_trace"])
