@@ -106,7 +106,7 @@ def collect(event, context):
         bucket = client.get_bucket("tech-blog-articles")
 
         # 格納するGCSパスを指定
-        blob = bucket.blob("data")
+        blob = bucket.blob("data/articles.txt")  # アップロード後のファイル名
 
         df = pd.DataFrame([[1, 2, 3], [5, 6, 7]], columns=["x", "y", "z"])
         # DataFrameをGCSにUpload(ヘッダーは入れるが、インデックスは落とす)
