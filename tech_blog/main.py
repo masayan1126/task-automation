@@ -77,11 +77,11 @@ def collect(event, context):
         res = requests.get(ENDPOINT, headers=headers)
         data = res.json()
 
-        for item in data["contents"]:
+        for article in data["contents"]:
             articles.append(
                 {
-                    "url": item["url"],
-                    "title": item["title"],
+                    "id": article["id"],
+                    "title": article["title"],
                 }
             )
 
@@ -91,7 +91,7 @@ def collect(event, context):
 
         print("対象の記事一覧:")
         for article in articles:
-            print(f"url: {article['url']}, title: {article['title']}")
+            print(f"id: {article['id']}, title: {article['title']}")
 
     except Exception as e:
         # e_type, e_value, e_traceback = sys.exc_info()
