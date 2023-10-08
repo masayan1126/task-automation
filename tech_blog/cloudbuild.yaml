@@ -5,7 +5,7 @@ steps:
   - functions
   - deploy
   # デプロイするfunction名
-  - tech_blog_score
+  - share_article_to_x
   - --region=asia-northeast1
   # 関数のソースコードの場所
   - --source=.
@@ -20,4 +20,4 @@ steps:
   - publish
   - function-deploy-topic
   - --message
-  - "Finish deploying tech blog score function !!"
+  - "Finish deploying tech blog share function !!"
