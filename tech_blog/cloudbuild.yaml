@@ -10,7 +10,20 @@ steps:
   # 関数のソースコードの場所
   - --source=.
   # ソースコード内に存在する関数名または完全修飾クラス名
-  - --entry-point=main
+  - --entry-point=share
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args:
+  - gcloud
+  - functions
+  - deploy
+  # デプロイするfunction名
+  - collect_article_from_mcs
+  - --region=asia-northeast1
+  # 関数のソースコードの場所
+  - --source=.
+  # ソースコード内に存在する関数名または完全修飾クラス名
+  - --entry-point=collect
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   args:
