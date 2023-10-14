@@ -114,19 +114,19 @@ def collect(event=None, context=None):
                 }
             )
 
-        credentials = service_account.Credentials.from_service_account_file(
-            os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE", "")
-        )
+        # credentials = service_account.Credentials.from_service_account_file(
+        #     os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE", "")
+        # )
 
-        scoped_credentials = credentials.with_scopes(
-            [
-                "https://www.googleapis.com/auth/cloud-platform",
-            ]
-        )
+        # scoped_credentials = credentials.with_scopes(
+        #     [
+        #         "https://www.googleapis.com/auth/cloud-platform",
+        #     ]
+        # )
 
         client = storage.Client(
-            credentials=scoped_credentials,
-            project=scoped_credentials.project_id,
+            # credentials=scoped_credentials,
+            # project=scoped_credentials.project_id,
         )
 
         bucket = client.get_bucket("tech-blog-articles")
@@ -146,6 +146,8 @@ def collect(event=None, context=None):
                     d[article_id] = article["title"]
 
             blob.upload_from_string(json.dumps(d))
+
+            print(d)
 
     except Exception as e:
         # e_type, e_value, e_traceback = sys.exc_info()
