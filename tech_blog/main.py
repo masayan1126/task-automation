@@ -16,13 +16,13 @@ def share(event=None, context=None):
 
         article_info_list = get_article_info_list_from_gcs()
 
-        # do_tweet(
-        #     consumer_key=os.getenv("CONSUMER_KEY", ""),
-        #     consumer_secret=os.getenv("CONSUMER_SECRET", ""),
-        #     access_token=os.getenv("ACCESS_TOKEN", ""),
-        #     access_token_secret=os.getenv("ACCESS_TOKEN_SECRET", ""),
-        #     share_content_list=article_info,
-        # )
+        do_tweet(
+            consumer_key=os.getenv("CONSUMER_KEY", ""),
+            consumer_secret=os.getenv("CONSUMER_SECRET", ""),
+            access_token=os.getenv("ACCESS_TOKEN", ""),
+            access_token_secret=os.getenv("ACCESS_TOKEN_SECRET", ""),
+            share_content_list=article_info_list,
+        )
 
         res = notify_to_slack(
             payload={
@@ -51,13 +51,7 @@ def collect(event=None, context=None):
         update_article_info_list(articles)
 
     except Exception as e:
-        # e_type, e_value, e_traceback = sys.exc_info()
         print(e)
-        # logging.error("Exception type : %s " % e_type.__name__)
-        # logging.error("Exception message : %s " % e_value.__name__)
-        # logging.error("Stack trace : %s " % e_traceback.__name__)
-
-        raise e
 
 
 if __name__ == "__main__":

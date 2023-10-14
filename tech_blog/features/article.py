@@ -93,7 +93,7 @@ def get_articles_from_mcs():
     Returns:
         _type_: _description_
     """
-    ENDPOINT = "https://quxwm5ub3d.microcms.io/api/v1/blogs?limit=100&offset=320"
+    ENDPOINT = "https://quxwm5ub3d.microcms.io/api/v1/blogs?limit=30&offset=0"
     headers = {"X-MICROCMS-API-KEY": os.getenv("X_MICROCMS_API_KEY", "")}
     res = requests.get(ENDPOINT, headers=headers)
     data = res.json()
