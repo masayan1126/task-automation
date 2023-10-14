@@ -5,8 +5,7 @@ steps:
   - functions
   - deploy
   # デプロイするfunction名
-  - content_share
-  # - share_content_automatically
+  - share_tech_tube_video_to_x
   - --region=asia-northeast1
   # 関数のソースコードの場所
   - --source=.

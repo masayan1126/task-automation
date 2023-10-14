@@ -5,7 +5,7 @@ steps:
   - functions
   - deploy
   # デプロイするfunction名
-  - share_article_to_x
+  - share_tech_blog_article_to_x
   - --region=asia-northeast1
   # 関数のソースコードの場所
   - --source=.
@@ -18,7 +18,7 @@ steps:
   - functions
   - deploy
   # デプロイするfunction名
-  - collect_article_from_mcs
+  - collect_tech_blog_article_from_cms
   - --region=asia-northeast1
   # 関数のソースコードの場所
   - --source=.
