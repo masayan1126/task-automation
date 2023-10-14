@@ -14,19 +14,20 @@ def share(event=None, context=None):
     try:
         load_dotenv("/Users/masayanishigaki/git/task-automation/tech_blog/.env")
 
-        credentials = service_account.Credentials.from_service_account_file(
-            os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE", "")
-        )
+        # service_account.Credentials
+        # credentials = service_account.Credentials.from_service_account_file(
+        #     os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE", "")
+        # )
 
-        scoped_credentials = credentials.with_scopes(
-            [
-                "https://www.googleapis.com/auth/cloud-platform",
-            ]
-        )
+        # scoped_credentials = credentials.with_scopes(
+        #     [
+        #         "https://www.googleapis.com/auth/cloud-platform",
+        #     ]
+        # )
 
         client = storage.Client(
-            credentials=scoped_credentials,
-            project=scoped_credentials.project_id,
+            # credentials=scoped_credentials,
+            # project=scoped_credentials.project_id,
         )
 
         bucket = client.get_bucket("tech-blog-articles")
@@ -58,13 +59,13 @@ def share(event=None, context=None):
                     }
                 )
 
-        do_tweet(
-            consumer_key=os.getenv("CONSUMER_KEY", ""),
-            consumer_secret=os.getenv("CONSUMER_SECRET", ""),
-            access_token=os.getenv("ACCESS_TOKEN", ""),
-            access_token_secret=os.getenv("ACCESS_TOKEN_SECRET", ""),
-            share_content_list=articles,
-        )
+        # do_tweet(
+        #     consumer_key=os.getenv("CONSUMER_KEY", ""),
+        #     consumer_secret=os.getenv("CONSUMER_SECRET", ""),
+        #     access_token=os.getenv("ACCESS_TOKEN", ""),
+        #     access_token_secret=os.getenv("ACCESS_TOKEN_SECRET", ""),
+        #     share_content_list=articles,
+        # )
 
         res = notify_to_slack(
             payload={
