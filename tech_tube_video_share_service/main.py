@@ -15,8 +15,8 @@ def main(event=None, context=None):
         os.environ.get("GCP_PROJECT_ID", ""), topic="youtube_video_retrieve_service"
     )
 
-    data_str = "message"
+    data_str = "x_share_service"
     # Data must be a bytestring
     data = data_str.encode("utf-8")
 
-    future = publisher.publish(topic_path, "x_share_service")
+    future = publisher.publish(topic_path, data_str)
