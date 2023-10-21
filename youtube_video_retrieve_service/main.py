@@ -4,10 +4,12 @@ from apiclient import discovery
 from utils import get_random_element_from_list
 import base64
 from google.cloud import pubsub_v1
+from dotenv import load_dotenv
 
 
 # 参考：https://zenn.dev/eito_blog/articles/94dc874c112c9f
 def retrieve_videos(event=None, context=None):
+    load_dotenv()
     destination_topic = base64.b64decode(event["data"]).decode("utf-8")
 
     num_of_retrieve_videos = 3
