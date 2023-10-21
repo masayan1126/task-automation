@@ -1,41 +1,33 @@
 import os
 from utils import get_random_element_from_list
-from x import do_tweet
+from services.x.contents_share_to_x_service import do_tweet
 from dotenv import load_dotenv
-from youtube import my_videos
-from x import do_tweet
+from services.youtube.youtube_video_retrieve_service import (
+    retrieve_want_to_share_videos,
+)
 
 from taopypy.notification import notify_to_slack
 
-"""Triggered from a message on a Cloud Pub/Sub topic.
-    Args:
-         event (dict): Event payload.
-         context (google.cloud.functions.Context): Metadata for the event.
-    """
 
-
-def main(event, context):
+def main(event=None, context=None):
     try:
         load_dotenv()
-        # TODO: cloud schedulerからシェアするコンテンツの情報をjsonなどで受け取る
+        # TODO: 処理開始のログを出す
 
-        videos = my_videos()
+        num_of_retrieve_videos = 2
+        want_to_share_videos = retrieve_want_to_share_videos(num_of_retrieve_videos)
 
         print("チャンネルの動画一覧:")
-        for video_info in videos:
+        for video_info in want_to_share_videos:
             print(f"url: {video_info['url']}, title: {video_info['title']}")
 
-        share_content_list = get_random_element_from_list(videos, 2)
-        # TODO: プログ記事も追加する
-        # TODO: logをutil化する
-
-        do_tweet(share_content_list)
+        do_tweet(want_to_share_videos)
 
         res = notify_to_slack(
             payload={
                 "icon_emoji": ":ghost:",
                 "username": "new-bot-name",
-                "text": f"定期シェア処理が完了しました\n\n{share_content_list}",
+                "text": f"定期シェア処理が完了しました\n\n{want_to_share_videos}",
             },
             to=os.getenv("SLACK_WEBHOOK_URL"),
         )

@@ -1,8 +1,15 @@
 import os
 from apiclient import discovery
+from utils import get_random_element_from_list
+import base64
 
 
-def my_videos() -> list:
+# 参考：https://zenn.dev/eito_blog/articles/94dc874c112c9f
+def retrieve_want_to_share_videos(event=None, context=None):
+    pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
+    print(pubsub_message)
+
+    num_of_retrieve_videos = 3
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
     API_VER = "v3"
     youtube_service = discovery.build("youtube", API_VER, developerKey=GOOGLE_API_KEY)
@@ -37,7 +44,9 @@ def my_videos() -> list:
         if not next_page_token:
             break
 
-    return videos
+    videos_ = get_random_element_from_list(videos, num_of_retrieve_videos)
+
+    print(videos_)
 
 
 def __get_video_title_by_id(youtube_service, video_id: str) -> str:

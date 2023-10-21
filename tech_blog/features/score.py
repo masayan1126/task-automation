@@ -5,6 +5,7 @@ import requests
 import numpy
 
 
+# 参考：https://zenn.dev/kotahashihama/articles/35133dafa1972bb70df0
 def calc_performance_score(payload, urlName, measurement_count):
     scores = []
 
