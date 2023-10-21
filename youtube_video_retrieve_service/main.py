@@ -1,13 +1,14 @@
+import json
 import os
 from apiclient import discovery
 from utils import get_random_element_from_list
 import base64
+from google.cloud import pubsub_v1
 
 
 # 参考：https://zenn.dev/eito_blog/articles/94dc874c112c9f
-def retrieve_want_to_share_videos(event=None, context=None):
-    pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
-    print(pubsub_message)
+def retrieve_videos(event=None, context=None):
+    destination_topic = base64.b64decode(event["data"]).decode("utf-8")
 
     num_of_retrieve_videos = 3
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
@@ -46,7 +47,15 @@ def retrieve_want_to_share_videos(event=None, context=None):
 
     videos_ = get_random_element_from_list(videos, num_of_retrieve_videos)
 
-    print(videos_)
+    publisher = pubsub_v1.PublisherClient()
+    topic_path = publisher.topic_path(
+        os.environ.get("GCP_PROJECT_ID", ""), topic=destination_topic
+    )
+
+    data = json.dumps(videos_).encode("utf-8")
+    print(data)
+
+    future = publisher.publish(topic_path, data)
 
 
 def __get_video_title_by_id(youtube_service, video_id: str) -> str:
