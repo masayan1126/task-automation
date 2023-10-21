@@ -53,7 +53,8 @@ def retrieve_videos(event=None, context=None):
     )
 
     data = json.dumps(videos_).encode("utf-8")
-    print(data)
+    print(f"destination_topic={destination_topic}")
+    print(f"topic_path={topic_path}")
 
     future = publisher.publish(topic_path, data)
 
