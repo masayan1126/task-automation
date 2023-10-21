@@ -19,4 +19,4 @@ def main(event=None, context=None):
     # Data must be a bytestring
     data = data_str.encode("utf-8")
 
-    future = publisher.publish(topic_path, data_str)
+    future = publisher.publish(topic_path, data)
