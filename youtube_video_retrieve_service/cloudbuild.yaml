@@ -10,7 +10,7 @@ steps:
   # 関数のソースコードの場所
   - --source=.
   # ソースコード内に存在する関数名または完全修飾クラス名
-  - --entry-point=main
+  - --entry-point=retrieve_want_to_share_videos
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   args:
