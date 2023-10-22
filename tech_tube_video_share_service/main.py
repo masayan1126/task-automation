@@ -1,8 +1,5 @@
-import base64
 import json
-import os
 from dotenv import load_dotenv
-from google.cloud import pubsub_v1
 import requests
 import google.auth.transport.requests
 import google.oauth2.id_token
@@ -12,14 +9,20 @@ import google.oauth2.id_token
 def main(event=None, context=None):
     load_dotenv()
 
-    auth_req = google.auth.transport.requests.Request()
-    id_token = google.oauth2.id_token.fetch_id_token(
-        auth_req,
-        "https://asia-northeast1-masayan1126.cloudfunctions.net/youtube_video_retrieve_service",
+    share_content_list = retrieve_video_list()
+
+    video_list = share_to_x(share_content_list)
+    print(video_list, flush=True)
+
+
+def retrieve_video_list() -> list:
+    youtube_video_retrieve_service_endpoint = "https://asia-northeast1-masayan1126.cloudfunctions.net/youtube_video_retrieve_service"
+    youtube_video_retrieve_service_id_token = get_token(
+        youtube_video_retrieve_service_endpoint
     )
 
     headers = {
-        "Authorization": f"Bearer {id_token}",
+        "Authorization": f"Bearer {youtube_video_retrieve_service_id_token}",
         "Content-Type": "application/json",
     }
 
@@ -29,31 +32,45 @@ def main(event=None, context=None):
     }
 
     res = requests.post(
-        url="https://asia-northeast1-masayan1126.cloudfunctions.net/youtube_video_retrieve_service",
+        url=youtube_video_retrieve_service_endpoint,
         headers=headers,
         data=json.dumps(data),
     )
 
-    print(res.content, flush=True)
+    video_list = json.loads(res.content)
 
-    # destination_topic = base64.b64decode(event["data"]).decode("utf-8")
-    # print(destination_topic)
+    return video_list
 
-    # publisher = pubsub_v1.PublisherClient()
-    # topic_path = publisher.topic_path(
-    #     os.environ.get("GCP_PROJECT_ID", ""), topic="youtube_video_retrieve_service"
-    # )
 
-    # data = {
-    #     "share": {"topic_id": "x_share_service"},
-    #     "notification": {
-    #         "topic_id": "youtube_video_retrieve_service",
-    #         "slack_web_hoook": "youtube_video_retrieve_service",
-    #     },
-    # }
+def share_to_x(share_content_list: list) -> list:
+    x_share_service_endpoint = (
+        "https://asia-northeast1-masayan1126.cloudfunctions.net/x_share_service"
+    )
+    x_share_service_endpoint_id_token = get_token(x_share_service_endpoint)
 
-    # data_str = "x_share_service"
-    # Data must be a bytestring
-    # data = json.dumps(data).encode("utf-8")
+    headers = {
+        "Authorization": f"Bearer {x_share_service_endpoint_id_token}",
+        "Content-Type": "application/json",
+    }
 
-    # future = publisher.publish(topic_path, data)
+    data = {"share_content_list": share_content_list}
+
+    res = requests.post(
+        url=x_share_service_endpoint,
+        headers=headers,
+        data=json.dumps(data),
+    )
+
+    video_list = json.loads(res.content)
+
+    return video_list
+
+
+def get_token(service_endpoint: str) -> str:
+    auth_req = google.auth.transport.requests.Request()
+    id_token = google.oauth2.id_token.fetch_id_token(
+        auth_req,
+        service_endpoint,
+    )
+
+    return id_token
