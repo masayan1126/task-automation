@@ -1,4 +1,5 @@
 import base64
+import json
 import os
 from dotenv import load_dotenv
 from google.cloud import pubsub_v1
@@ -15,8 +16,16 @@ def main(event=None, context=None):
         os.environ.get("GCP_PROJECT_ID", ""), topic="youtube_video_retrieve_service"
     )
 
-    data_str = "x_share_service"
+    data = {
+        "share": {"topic_id": "x_share_service"},
+        "notification": {
+            "topic_id": "youtube_video_retrieve_service",
+            "slack_web_hoook": "youtube_video_retrieve_service",
+        },
+    }
+
+    # data_str = "x_share_service"
     # Data must be a bytestring
-    data = data_str.encode("utf-8")
+    data = json.dumps(data).encode("utf-8")
 
     future = publisher.publish(topic_path, data)
