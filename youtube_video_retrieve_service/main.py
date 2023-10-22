@@ -1,13 +1,9 @@
 import json
-
-# import os
 from apiclient import discovery
-import flask
 from utils import get_random_element_from_list
-from dotenv import load_dotenv
 
 
-def retrieve_videos(request: flask.Request):
+def retrieve_videos(req):
     """Responds to any HTTP request.
     Args:
         request (flask.Request): HTTP request object.
@@ -16,37 +12,26 @@ def retrieve_videos(request: flask.Request):
         Response object using
         `make_response <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>`.
     """
-    request_json = request.get_json()
-    print(request_json["google_api_key"], flush=True)
+    google_api_key, channel_id = __parse(req)
 
-    load_dotenv()
-    # destination_topic = base64.b64decode(event["data"]).decode("utf-8")
-
-    num_of_retrieve_videos = 3
-    GOOGLE_API_KEY = request_json["google_api_key"]
     API_VER = "v3"
-    youtube_service = discovery.build("youtube", API_VER, developerKey=GOOGLE_API_KEY)
+    youtube_service = discovery.build("youtube", API_VER, developerKey=google_api_key)
 
     videos = []
     next_page_token = None
 
-    # d = {
-    #     "google_api_key": "masayan1126-o5jxfzqQ",
-    #     "channel_id": "UC5AcEeC1LjJ7f5-o5jxfzqQ",
-    # }
-
     while True:
-        request = youtube_service.search().list(
+        req = youtube_service.search().list(
             part="id",
-            channelId=request_json["channel_id"],
+            channelId=channel_id,
             maxResults=50,  # 1回のリクエストで取得する最大動画数
             pageToken=next_page_token,
         )
 
         # チャンネル内の全てのビデオ
-        response = request.execute()
+        res = req.execute()
 
-        for item in response["items"]:
+        for item in res["items"]:
             if __is_want_share_video(item):
                 video_id = item["id"]["videoId"]
                 title = __get_video_title_by_id(youtube_service, video_id)
@@ -57,25 +42,22 @@ def retrieve_videos(request: flask.Request):
                     }
                 )
 
-        next_page_token = response.get("nextPageToken")
+        next_page_token = res.get("nextPageToken")
 
         if not next_page_token:
             break
 
-    videos = get_random_element_from_list(videos, num_of_retrieve_videos)
+    NUM_OF_RETRIEVE_VIDEOS = 3
+    videos = get_random_element_from_list(videos, NUM_OF_RETRIEVE_VIDEOS)
 
     return json.dumps(videos)
 
-    # publisher = pubsub_v1.PublisherClient()
-    # topic_path = publisher.topic_path(
-    #     os.environ.get("GCP_PROJECT_ID", ""), topic=destination_topic
-    # )
 
-    # data = json.dumps(videos_).encode("utf-8")
-    # print(f"destination_topic={destination_topic}")
-    # print(f"topic_path={topic_path}")
-
-    # future = publisher.publish(topic_path, data)
+def __parse(req):
+    req_json = req.get_json()
+    GOOGLE_API_KEY = req_json["google_api_key"]
+    channel_id = req_json["channel_id"]
+    return GOOGLE_API_KEY, channel_id
 
 
 def __get_video_title_by_id(youtube_service, video_id: str) -> str:
