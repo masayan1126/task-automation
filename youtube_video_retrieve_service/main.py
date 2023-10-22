@@ -3,7 +3,7 @@ from apiclient import discovery
 from utils import get_random_element_from_list
 
 
-def retrieve_videos(req):
+def retrieve_videos(request):
     """Responds to any HTTP request.
     Args:
         request (flask.Request): HTTP request object.
@@ -12,7 +12,7 @@ def retrieve_videos(req):
         Response object using
         `make_response <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>`.
     """
-    google_api_key, channel_id = __parse(req)
+    google_api_key, channel_id = __parse(request)
 
     API_VER = "v3"
     youtube_service = discovery.build("youtube", API_VER, developerKey=google_api_key)
