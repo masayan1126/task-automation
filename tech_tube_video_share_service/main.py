@@ -4,11 +4,21 @@ import os
 from dotenv import load_dotenv
 from google.cloud import pubsub_v1
 import requests
+import google.auth.transport.requests
+import google.oauth2.id_token
 
 
 # 参考：https://zenn.dev/eito_blog/articles/94dc874c112c9f
 def main(event=None, context=None):
     load_dotenv()
+
+    auth_req = google.auth.transport.requests.Request()
+    id_token = google.oauth2.id_token.fetch_id_token(
+        auth_req,
+        "https://asia-northeast1-masayan1126.cloudfunctions.net/youtube_video_retrieve_service",
+    )
+
+    headers = {"Authorization": f"Bearer {id_token}"}
 
     data = {
         "google_api_key": "AIzaSyDujSCmj2xcx_620BeN2aSX140XmcP-5A0",
@@ -16,7 +26,8 @@ def main(event=None, context=None):
     }
 
     res = requests.post(
-        "https://asia-northeast1-masayan1126.cloudfunctions.net/youtube_video_retrieve_service",
+        url="https://asia-northeast1-masayan1126.cloudfunctions.net/youtube_video_retrieve_service",
+        headers=headers,
         data=data,
     )
 
