@@ -13,6 +13,7 @@ def main(event=None, context=None):
     share_content_list = retrieve_video_list()
 
     video_list = share_to_x(share_content_list)
+    print(video_list, flush=True)
 
 
 def retrieve_video_list() -> list:
@@ -63,11 +64,9 @@ def share_to_x(share_content_list: list) -> list:
         data=json.dumps(data),
     )
 
-    print(res.content, flush=True)
+    video_list = json.loads(res.content)
 
-    # video_list = json.loads(res.content)
-
-    return [""]
+    return video_list
 
 
 def get_token(service_endpoint: str) -> str:
