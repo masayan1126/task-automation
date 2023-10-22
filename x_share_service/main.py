@@ -32,4 +32,4 @@ def __parse(req) -> list:
     req_json = req.get_json()
     share_content_list = req_json["share_content_list"]
 
-    return json.loads(share_content_list)
+    return share_content_list
