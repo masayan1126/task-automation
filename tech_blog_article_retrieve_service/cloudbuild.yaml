@@ -1,0 +1,23 @@
+steps:
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args:
+  - gcloud
+  - functions
+  - deploy
+  # デプロイするfunction名
+  - tech_blog_article_retrieve_service
+  - --region=asia-northeast1
+  # 関数のソースコードの場所
+  - --source=.
+  # ソースコード内に存在する関数名または完全修飾クラス名
+  - --entry-point=retrieve_blog_articles
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args:
+  - gcloud
+  - pubsub
+  - topics
+  - publish
+  - function-deploy-topic
+  - --message
+  - "Finish deploying content share function !!"
