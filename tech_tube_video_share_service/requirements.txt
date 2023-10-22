@@ -16,3 +16,4 @@ python-dotenv==1.0.0
 requests==2.31.0
 rsa==4.9
 urllib3==2.0.7
+taopypy==0.1.7

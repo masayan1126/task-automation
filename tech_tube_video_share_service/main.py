@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import requests
 import google.auth.transport.requests
 import google.oauth2.id_token
+from taopypy.notification import notify_to_slack
 
 
 # 参考：https://zenn.dev/eito_blog/articles/94dc874c112c9f
@@ -11,9 +12,18 @@ def main(event=None, context=None):
     load_dotenv()
 
     share_content_list = retrieve_video_list()
+    shared_videos = share_to_x(share_content_list)
+    # print(video_list, flush=True)
 
-    video_list = share_to_x(share_content_list)
-    print(video_list, flush=True)
+    res = notify_to_slack(
+        payload={
+            "icon_emoji": ":ghost:",
+            "username": "new-bot-name",
+            "text": f"定期シェア処理が完了しました\n\n{shared_videos}",
+        },
+        to=os.getenv("SLACK_WEBHOOK_URL", ""),
+    )
+    print(f"Notification response={res}")
 
 
 def retrieve_video_list() -> list:
@@ -28,9 +38,7 @@ def retrieve_video_list() -> list:
     }
 
     data = {
-        # "AIzaSyDujSCmj2xcx_620BeN2aSX140XmcP-5A0"
         "google_api_key": os.environ["GOOGLE_API_KEY"],
-        # "UC5AcEeC1LjJ7f5-o5jxfzqQ"
         "channel_id": os.environ["YOUTUBE_CHANNEL_ID"],
     }
 
