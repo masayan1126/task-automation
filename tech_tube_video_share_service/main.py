@@ -11,9 +11,8 @@ def main(event=None, context=None):
     load_dotenv()
 
     share_content_list = retrieve_video_list()
-    print(share_content_list, flush=True)
 
-    # video_list = share_to_x(share_content_list)
+    video_list = share_to_x(share_content_list)
 
 
 def retrieve_video_list() -> list:
@@ -64,9 +63,11 @@ def share_to_x(share_content_list: list) -> list:
         data=json.dumps(data),
     )
 
-    video_list = json.loads(res.content)
+    print(res.content, flush=True)
 
-    return video_list
+    # video_list = json.loads(res.content)
+
+    return [""]
 
 
 def get_token(service_endpoint: str) -> str:
