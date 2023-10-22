@@ -1,4 +1,5 @@
 import json
+import os
 from dotenv import load_dotenv
 import requests
 import google.auth.transport.requests
@@ -10,9 +11,9 @@ def main(event=None, context=None):
     load_dotenv()
 
     share_content_list = retrieve_video_list()
+    print(share_content_list, flush=True)
 
-    video_list = share_to_x(share_content_list)
-    print(video_list, flush=True)
+    # video_list = share_to_x(share_content_list)
 
 
 def retrieve_video_list() -> list:
@@ -27,8 +28,10 @@ def retrieve_video_list() -> list:
     }
 
     data = {
-        "google_api_key": "AIzaSyDujSCmj2xcx_620BeN2aSX140XmcP-5A0",
-        "channel_id": "UC5AcEeC1LjJ7f5-o5jxfzqQ",
+        # "AIzaSyDujSCmj2xcx_620BeN2aSX140XmcP-5A0"
+        "google_api_key": os.environ["GOOGLE_API_KEY"],
+        # "UC5AcEeC1LjJ7f5-o5jxfzqQ"
+        "channel_id": os.environ["YOUTUBE_CHANNEL_ID"],
     }
 
     res = requests.post(
