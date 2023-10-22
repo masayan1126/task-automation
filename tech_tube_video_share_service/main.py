@@ -4,16 +4,14 @@ from dotenv import load_dotenv
 import requests
 import google.auth.transport.requests
 import google.oauth2.id_token
-from taopypy.notification import notify_to_slack
 
 
 # 参考：https://zenn.dev/eito_blog/articles/94dc874c112c9f
 def main(event=None, context=None):
     load_dotenv()
 
-    share_content_list = retrieve_video_list()
-    shared_videos = share_to_x(share_content_list)
-    # print(video_list, flush=True)
+    share_video_list = retrieve_video_list()
+    shared_videos = share_to_x(share_video_list)
 
     res = notify_to_slack(
         payload={
@@ -85,3 +83,15 @@ def get_token(service_endpoint: str) -> str:
     )
 
     return id_token
+
+
+def notify_to_slack(payload: dict, to: str) -> requests.Response:
+    headers = {"Content-Type": "application/json; charset=UTF-8"}
+    res = requests.post(
+        url=to,
+        headers=headers,
+        data=json.dumps(payload),
+        proxies=None,
+    )
+
+    return res
