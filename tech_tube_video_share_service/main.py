@@ -31,7 +31,7 @@ def main(event=None, context=None):
     res = requests.post(
         url="https://asia-northeast1-masayan1126.cloudfunctions.net/youtube_video_retrieve_service",
         headers=headers,
-        data=data,
+        data=json.dumps(data),
     )
 
     print(res.content, flush=True)
