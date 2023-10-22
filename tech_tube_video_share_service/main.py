@@ -18,7 +18,10 @@ def main(event=None, context=None):
         "https://asia-northeast1-masayan1126.cloudfunctions.net/youtube_video_retrieve_service",
     )
 
-    headers = {"Authorization": f"Bearer {id_token}"}
+    headers = {
+        "Authorization": f"Bearer {id_token}",
+        "Content-Type": "application/json",
+    }
 
     data = {
         "google_api_key": "AIzaSyDujSCmj2xcx_620BeN2aSX140XmcP-5A0",
