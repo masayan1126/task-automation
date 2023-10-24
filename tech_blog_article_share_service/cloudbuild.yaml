@@ -5,7 +5,7 @@ steps:
   - functions
   - deploy
   # デプロイするfunction名
-  - tech_blog_article_share_service-1
+  - tech_blog_article_share_service
   - --region=asia-northeast1
   # 関数のソースコードの場所
   - --source=.
