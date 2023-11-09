@@ -46,6 +46,8 @@ def retrieve_video_list() -> list:
         data=json.dumps(data),
     )
 
+    print(f"res.content: {res.content}", flush=True)
+
     video_list = json.loads(res.content)
 
     return video_list
