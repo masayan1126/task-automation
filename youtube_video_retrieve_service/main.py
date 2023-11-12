@@ -1,21 +1,10 @@
 import json
-
-from flask.scaffold import F
 from apiclient import discovery
 from utils import get_random_element_from_list
 
 
-def retrieve_videos(request):
-    """Responds to any HTTP request.
-    Args:
-        request (flask.Request): HTTP request object.
-    Returns:
-        The response text or any set of values that can be turned into a
-        Response object using
-        `make_response <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>`.
-    """
+def retrieve_videos(request=None):
     google_api_key, channel_id = __parse(request)
-    print(f"google_api_key: {google_api_key},{channel_id}")
 
     API_VER = "v3"
     youtube_service = discovery.build("youtube", API_VER, developerKey=google_api_key)
@@ -53,10 +42,12 @@ def retrieve_videos(request):
     NUM_OF_RETRIEVE_VIDEOS = 3
     videos = get_random_element_from_list(videos, NUM_OF_RETRIEVE_VIDEOS)
 
+    print(videos)
+
     return json.dumps(videos)
 
 
-def __parse(req):
+def __parse(req) ->list[str]:
     req_json = req.get_json()
     
     GOOGLE_API_KEY = req_json["google_api_key"]
@@ -101,3 +92,6 @@ def __is_want_share_video(item) -> bool:
         item["id"]["kind"] == "youtube#video"
         and item["id"]["videoId"] not in exclude_video_ids
     )
+
+if __name__ == "__main__":
+    retrieve_videos()
