@@ -1,4 +1,6 @@
 import json
+
+from flask.scaffold import F
 from apiclient import discovery
 from utils import get_random_element_from_list
 
@@ -55,6 +57,7 @@ def retrieve_videos(request):
 
 def __parse(req):
     req_json = req.get_json()
+    print(f"req_json: {req_json}")
     GOOGLE_API_KEY = req_json["google_api_key"]
     channel_id = req_json["channel_id"]
     return GOOGLE_API_KEY, channel_id
