@@ -15,6 +15,7 @@ def retrieve_videos(request):
         `make_response <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>`.
     """
     google_api_key, channel_id = __parse(request)
+    print(f"google_api_key: {google_api_key},{channel_id}")
 
     API_VER = "v3"
     youtube_service = discovery.build("youtube", API_VER, developerKey=google_api_key)
@@ -57,10 +58,10 @@ def retrieve_videos(request):
 
 def __parse(req):
     req_json = req.get_json()
-    print(f"req_json: {req_json}")
+    
     GOOGLE_API_KEY = req_json["google_api_key"]
     channel_id = req_json["channel_id"]
-    return GOOGLE_API_KEY, channel_id
+    return [GOOGLE_API_KEY, channel_id]
 
 
 def __get_video_title_by_id(youtube_service, video_id: str) -> str:
